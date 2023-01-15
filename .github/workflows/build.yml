@@ -1,4 +1,4 @@
-name: Build
+name: build-with-maven
 on: workflow_dispatch
 jobs:
     generate-jar:
