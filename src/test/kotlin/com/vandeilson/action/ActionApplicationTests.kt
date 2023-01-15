@@ -8,6 +8,7 @@ class ActionApplicationTests {
 
 	@Test
 	fun contextLoads() {
+		throw Exception()
 	}
 
 }
