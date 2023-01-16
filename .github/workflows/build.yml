@@ -1,5 +1,5 @@
 name: build-with-maven
-on: [workflow_dispatch, push]
+on: workflow_dispatch
 jobs:
     generate-jar:
         runs-on: ubuntu-latest
