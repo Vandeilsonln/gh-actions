@@ -49,3 +49,15 @@ jobs:
                     cache: 'maven'
             -   name: Integration Tests
                 run: mvn clean -B integration-test
+
+    deploy:
+        needs: integration-test
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Build Artifacts
+              uses: actions/download-artifact@v3
+              with:
+                  name: app.jar
+            - name: deploy into server
+              #run: echo "Jar will be deployed later on"
+              run: java -jar app.jar
