@@ -62,4 +62,4 @@ jobs:
               #run: echo "Jar will be deployed later on"
               run: |
                   ls -la
-                  java -jar app.jar
+                  java -jar *.jar
