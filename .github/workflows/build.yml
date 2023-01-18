@@ -9,6 +9,8 @@ on:
 jobs:
     generate-jar:
         runs-on: ubuntu-latest
+        outputs:
+            script-file: $${{steps.publish_name.outputs.script-file}}
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-java@v3
@@ -16,8 +18,15 @@ jobs:
                   distribution: 'zulu'
                   java-version: '17'
                   cache: 'maven'
+
             - name: Build with Maven
               run: mvn -B package -DskipTests --file pom.xml
+
+            - name: Retrieve the jar file name
+              id: publish_name
+              run: |
+                  find target/*.jar -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
+
             - name: Upload Jar
               uses: actions/upload-artifact@v3
               with:
@@ -51,15 +60,17 @@ jobs:
                 run: mvn clean -B integration-test
 
     deploy:
-        needs: integration-test
+        needs: [integration-test, generate-jar]
         runs-on: ubuntu-latest
         steps:
             - name: Get Build Artifacts
               uses: actions/download-artifact@v3
               with:
                   name: app.jar
+
+            - name: Output filename
+              run: echo "${needs.generate-jar.outputs.script-file}"
+
             - name: deploy into server
-              #run: echo "Jar will be deployed later on"
               run: |
-                  ls -la
-                  java -jar *.jar
+                  echo "Jar will be deployed later on"
