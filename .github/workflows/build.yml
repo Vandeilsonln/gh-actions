@@ -60,4 +60,6 @@ jobs:
                   name: app.jar
             - name: deploy into server
               #run: echo "Jar will be deployed later on"
-              run: java -jar app.jar
+              run: |
+                  ls -la
+                  java -jar app.jar
