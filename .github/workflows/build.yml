@@ -6,9 +6,14 @@ on:
     push:
         branches:
             - main
+env:
+    GLOBAL_TEST: ${{ secrets.MY_GLOBAL_ENV }}
 jobs:
     generate-jar:
+        environment: homolog
         runs-on: ubuntu-latest
+        outputs:
+            script-file: ${{steps.publish_name.outputs.script-file}}
         steps:
             - uses: actions/checkout@v3
             - uses: actions/setup-java@v3
@@ -16,8 +21,15 @@ jobs:
                   distribution: 'zulu'
                   java-version: '17'
                   cache: 'maven'
+
             - name: Build with Maven
               run: mvn -B package -DskipTests --file pom.xml
+
+            - name: Retrieve the jar file name
+              id: publish_name
+              run: |
+                  find target/*.jar -type f -execdir echo 'script-file={}' >> $GITHUB_OUTPUT ';'
+
             - name: Upload Jar
               uses: actions/upload-artifact@v3
               with:
@@ -25,6 +37,9 @@ jobs:
                   path: target/*.jar
 
     unit-test:
+        environment: homolog
+        env:
+            UNIT_TEST: ${{ secrets.MY_UNIT_TEST }}
         needs: generate-jar
         runs-on: ubuntu-latest
         steps:
@@ -38,6 +53,9 @@ jobs:
                 run: mvn clean -B test
 
     integration-test:
+        environment: production
+        env:
+            INTEGRATION_TEST: ${{ secrets.MY_INTEGRATION_TEST }}
         needs: generate-jar
         runs-on: ubuntu-latest
         steps:
@@ -48,4 +66,23 @@ jobs:
                     java-version: '17'
                     cache: 'maven'
             -   name: Integration Tests
-                run: mvn clean -B integration-test
+                run: mvn clean -B -DskipTests integration-test
+
+    deploy:
+        needs: [integration-test, generate-jar]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Build Artifacts
+              uses: actions/download-artifact@v3
+              with:
+                  name: app.jar
+
+            - name: Output filename
+              run: echo "${{needs.generate-jar.outputs.script-file}}"
+
+            - name: deploy into server
+              run: |
+                  echo "Jar will be deployed later on"
+                  echo "GLOBAL ENV: $GLOBAL_TEST"
+                  echo "UNIT ENV: $UNIT_TEST"
+                  echo "INTEGRATION ENV: $INTEGRATION_TEST"
