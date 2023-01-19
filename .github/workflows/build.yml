@@ -69,7 +69,7 @@ jobs:
                   name: app.jar
 
             - name: Output filename
-              run: echo "${{needs.generate-jar.outputs.script-file}}"
+              run: echo "{{needs.generate-jar.outputs.script-file}}"
 
             - name: deploy into server
               run: |
