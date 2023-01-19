@@ -80,3 +80,6 @@ jobs:
             - name: deploy into server
               run: |
                   echo "Jar will be deployed later on"
+                  echo "GLOBAL ENV: $GLOBAL_TEST"
+                  echo "UNIT ENV: $UNIT_TEST"
+                  echo "INTEGRATION ENV: $INTEGRATION_TEST"
