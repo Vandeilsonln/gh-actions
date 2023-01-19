@@ -10,6 +10,7 @@ env:
     GLOBAL_TEST: ${{ secrets.MY_GLOBAL_ENV }}
 jobs:
     generate-jar:
+        environment: homolog
         runs-on: ubuntu-latest
         outputs:
             script-file: ${{steps.publish_name.outputs.script-file}}
@@ -36,6 +37,7 @@ jobs:
                   path: target/*.jar
 
     unit-test:
+        environment: homolog
         env:
             UNIT_TEST: ${{ secrets.MY_UNIT_TEST }}
         needs: generate-jar
@@ -51,6 +53,7 @@ jobs:
                 run: mvn clean -B test
 
     integration-test:
+        environment: production
         env:
             INTEGRATION_TEST: ${{ secrets.MY_INTEGRATION_TEST }}
         needs: generate-jar
