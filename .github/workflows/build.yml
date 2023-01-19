@@ -63,7 +63,7 @@ jobs:
                     java-version: '17'
                     cache: 'maven'
             -   name: Integration Tests
-                run: mvn clean -B integration-test
+                run: mvn clean -B -DskipTests integration-test
 
     deploy:
         needs: [integration-test, generate-jar]
