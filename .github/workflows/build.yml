@@ -67,7 +67,7 @@ jobs:
                     cache: 'maven'
             -   name: Integration Tests
                 id: integration_test_step
-                run: mvn -Dunit.skip=true clean -B integration-test
+                run: mvn -Dunit.skip=true clean -B verify
 
             -   name: upload test report
                 if: failure() && steps.integration_test_step.outcome == 'failure'
