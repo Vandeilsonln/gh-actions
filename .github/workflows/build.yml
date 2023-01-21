@@ -50,7 +50,11 @@ jobs:
                     java-version: '17'
                     cache: 'maven'
             -   name: Unit Tests
+                id: unit_test_step
                 run: mvn clean -B test
+            - name: upload test report
+              if: failure() && steps.unit_test_step.outcome == 'failure'
+            - run: echo "Generating sonar cloud report"
 
     integration-test:
         environment: production
