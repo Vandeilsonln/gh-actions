@@ -23,7 +23,7 @@ jobs:
                   cache: 'maven'
 
             - name: Build with Maven
-              run: mvn -B package -Dunit.skip=true --file pom.xml
+              run: mvn -B package -DskipTest=true --file pom.xml
 
             - name: Retrieve the jar file name
               id: publish_name
@@ -67,7 +67,7 @@ jobs:
                     cache: 'maven'
             -   name: Integration Tests
                 id: integration_test_step
-                run: mvn -Dunit.skip=true clean -B verify
+                run: mvn -DskipTests clean -B verify
 
             -   name: upload test report
                 if: failure() && steps.integration_test_step.outcome == 'failure'
