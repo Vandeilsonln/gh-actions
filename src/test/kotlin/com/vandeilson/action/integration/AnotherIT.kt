@@ -20,6 +20,7 @@ class AnotherIT {
     @Test
     fun `integration test for envs`() {
         val testValue = environment.getProperty("INTEGRATION_TEST")
+        throw Exception()
         AssertionErrors.assertNotNull(testValue!!, "TEST env variable should not be null")
         println(testValue)
         println(System.getenv("GLOBAL_TEST"))
