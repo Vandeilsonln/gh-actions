@@ -1,5 +1,6 @@
 package com.vandeilson.action.integration
 
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
@@ -21,6 +22,7 @@ class AnotherIT {
     fun `integration test for envs`() {
         val testValue = environment.getProperty("INTEGRATION_TEST")
         AssertionErrors.assertNotNull(testValue!!, "TEST env variable should not be null")
+        assertEquals("xablau", testValue)
         println(testValue)
         println(System.getenv("GLOBAL_TEST"))
 
