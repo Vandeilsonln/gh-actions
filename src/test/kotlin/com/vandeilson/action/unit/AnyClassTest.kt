@@ -13,6 +13,7 @@ class AnyClassTest {
     @Test
     fun `unit test for envs`() {
         val testValue = System.getenv("UNIT_TEST")
+        throw Exception()
         assertNotNull(testValue!!, "TEST env variable should not be null")
         println(testValue)
         println(System.getenv("GLOBAL_TEST"))
