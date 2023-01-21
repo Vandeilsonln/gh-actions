@@ -23,7 +23,7 @@ jobs:
                   cache: 'maven'
 
             - name: Build with Maven
-              run: mvn -B package -DskipTests --file pom.xml
+              run: mvn -B package -Dunit.skip=true --file pom.xml
 
             - name: Retrieve the jar file name
               id: publish_name
@@ -66,7 +66,12 @@ jobs:
                     java-version: '17'
                     cache: 'maven'
             -   name: Integration Tests
-                run: mvn clean -B -DskipTests integration-test
+                id: integration_test_step
+                run: mvn -Dunit.skip=true clean -B verify
+
+            -   name: upload test report
+                if: failure() && steps.integration_test_step.outcome == 'failure'
+                run: echo "Generating sonar cloud report"
 
     deploy:
         needs: [integration-test, generate-jar]
