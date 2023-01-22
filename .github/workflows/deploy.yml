@@ -10,6 +10,7 @@ on:
                 MY_GLOBAL_SECRET:
                     description: just checking how this works!
                     required: true
+                    type: string
 jobs:
     deploy:
         runs-on: ubuntu-latest
