@@ -9,8 +9,14 @@ on:
         secrets:
             MY_GLOBAL_SECRET:
                 required: true
+        outputs:
+            result:
+                description: result of the deploy
+                value: ${{jobs.deploy.outputs.outcome}}
 jobs:
     deploy:
+        outputs:
+            outcome: ${{steps.set-result.outputs.step-result}}
         runs-on: ubuntu-latest
         steps:
             - name: Get Artifact
@@ -22,3 +28,7 @@ jobs:
               run: |
                   echo "Jar will be deployed later on"
                   echo "My secret is: $MY_GLOBAL_SECRET"
+
+            - name: provide deploy result
+              id: set-result
+              run: echo "step-result=success" >> $GITHUB_OUTPUT

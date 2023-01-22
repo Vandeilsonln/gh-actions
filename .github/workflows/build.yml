@@ -85,6 +85,13 @@ jobs:
         secrets:
             MY_GLOBAL_SECRET: ${{ secrets.MY_GLOBAL_ENV }}
 
+    post-deploy-process:
+        needs: deploy
+        runs-on: ubuntu-latest
+        steps:
+            - name: print deploy outcome
+              run: echo "${{needs.deploy.outputs.result}}"
+
 #    deploy:
 #        needs: [integration-test, generate-jar]
 #        runs-on: ubuntu-latest
