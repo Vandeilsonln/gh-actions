@@ -1,0 +1,10 @@
+name: deploy
+on: worklow_call
+jobs:
+    deploy:
+        needs: [integration-test, generate-jar]
+        runs-on: ubuntu-latest
+        steps:
+            - name: deploy into server
+              run: |
+                  echo "Jar will be deployed later on"

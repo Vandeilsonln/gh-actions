@@ -79,19 +79,23 @@ jobs:
 
     deploy:
         needs: [integration-test, generate-jar]
-        runs-on: ubuntu-latest
-        steps:
-            - name: Get Build Artifacts
-              uses: actions/download-artifact@v3
-              with:
-                  name: app.jar
+        uses: ./.github/workflows/deploy.yml
 
-            - name: Output filename
-              run: echo "${{needs.generate-jar.outputs.script-file}}"
-
-            - name: deploy into server
-              run: |
-                  echo "Jar will be deployed later on"
-                  echo "GLOBAL ENV: $GLOBAL_TEST"
-                  echo "UNIT ENV: $UNIT_TEST"
-                  echo "INTEGRATION ENV: $INTEGRATION_TEST"
+#    deploy:
+#        needs: [integration-test, generate-jar]
+#        runs-on: ubuntu-latest
+#        steps:
+#            - name: Get Build Artifacts
+#              uses: actions/download-artifact@v3
+#              with:
+#                  name: app.jar
+#
+#            - name: Output filename
+#              run: echo "${{needs.generate-jar.outputs.script-file}}"
+#
+#            - name: deploy into server
+#              run: |
+#                  echo "Jar will be deployed later on"
+#                  echo "GLOBAL ENV: $GLOBAL_TEST"
+#                  echo "UNIT ENV: $UNIT_TEST"
+#                  echo "INTEGRATION ENV: $INTEGRATION_TEST"
