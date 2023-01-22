@@ -80,6 +80,7 @@ jobs:
     deploy:
         needs: [integration-test, generate-jar]
         uses: ./.github/workflows/deploy.yml
+        environment: production
         with:
             deployable-jar: app.jar
         secrets:
