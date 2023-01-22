@@ -10,10 +10,10 @@ env:
     GLOBAL_TEST: ${{ secrets.MY_GLOBAL_ENV }}
 jobs:
     generate-jar:
-        continue-on-error: true
-        strategy:
-            matrix:
-                java-version: [11, 17, 18]
+#        continue-on-error: true
+#        strategy:
+#            matrix:
+#                java-version: [11, 17, 18]
         environment: homolog
         runs-on: ubuntu-latest
         outputs:
@@ -23,7 +23,7 @@ jobs:
             - uses: actions/setup-java@v3
               with:
                   distribution: 'zulu'
-                  java-version: ${{matrix.java-version}}
+                  java-version: 17
                   cache: 'maven'
 
             - name: Build with Maven
