@@ -16,6 +16,8 @@ jobs:
 #                java-version: [11, 17, 18]
         environment: homolog
         runs-on: ubuntu-latest
+        container:
+            image: maven:3.8.7-openjdk-18-slim
         outputs:
             script-file: ${{steps.publish_name.outputs.script-file}}
         steps:
@@ -91,22 +93,3 @@ jobs:
         steps:
             - name: print deploy outcome
               run: echo "${{needs.deploy.outputs.result}}"
-
-#    deploy:
-#        needs: [integration-test, generate-jar]
-#        runs-on: ubuntu-latest
-#        steps:
-#            - name: Get Build Artifacts
-#              uses: actions/download-artifact@v3
-#              with:
-#                  name: app.jar
-#
-#            - name: Output filename
-#              run: echo "${{needs.generate-jar.outputs.script-file}}"
-#
-#            - name: deploy into server
-#              run: |
-#                  echo "Jar will be deployed later on"
-#                  echo "GLOBAL ENV: $GLOBAL_TEST"
-#                  echo "UNIT ENV: $UNIT_TEST"
-#                  echo "INTEGRATION ENV: $INTEGRATION_TEST"
