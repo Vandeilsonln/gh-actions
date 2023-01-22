@@ -8,6 +8,7 @@ on:
             - main
 env:
     GLOBAL_TEST: ${{ secrets.MY_GLOBAL_ENV }}
+    JAR_APP_NAME: app.jar
 jobs:
     generate-jar:
 #        continue-on-error: true
@@ -37,7 +38,7 @@ jobs:
             - name: Upload Jar
               uses: actions/upload-artifact@v3
               with:
-                  name: app.jar
+                  name: $JAR_APP_NAME
                   path: target/*.jar
 
     unit-test:
@@ -80,6 +81,8 @@ jobs:
     deploy:
         needs: [integration-test, generate-jar]
         uses: ./.github/workflows/deploy.yml
+        with:
+            deployable-jar: JAR_APP_NAME
 
 #    deploy:
 #        needs: [integration-test, generate-jar]
