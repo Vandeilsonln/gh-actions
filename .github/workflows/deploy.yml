@@ -6,11 +6,9 @@ on:
                 description: jar to be deployed
                 required: true
                 type: string
-            secrets:
-                MY_GLOBAL_SECRET:
-                    description: just checking how this works!
-                    required: true
-                    type: string
+        secrets:
+            MY_GLOBAL_SECRET:
+                required: true
 jobs:
     deploy:
         runs-on: ubuntu-latest
