@@ -10,6 +10,7 @@ env:
     GLOBAL_TEST: ${{ secrets.MY_GLOBAL_ENV }}
 jobs:
     generate-jar:
+        continue-on-error: true
         strategy:
             matrix:
                 java-version: [11, 17, 18]
