@@ -1,0 +1,34 @@
+name: deploy
+on:
+    workflow_call:
+        inputs:
+            deployable-jar:
+                description: jar to be deployed
+                required: true
+                type: string
+        secrets:
+            MY_GLOBAL_SECRET:
+                required: true
+        outputs:
+            result:
+                description: result of the deploy
+                value: ${{jobs.deploy.outputs.outcome}}
+jobs:
+    deploy:
+        outputs:
+            outcome: ${{steps.set-result.outputs.step-result}}
+        runs-on: ubuntu-latest
+        steps:
+            - name: Get Artifact
+              uses: actions/download-artifact@v3
+              with:
+                  name: ${{inputs.deployable-jar}}
+
+            - name: deploy into server
+              run: |
+                  echo "Jar will be deployed later on"
+                  echo "My secret is: $MY_GLOBAL_SECRET"
+
+            - name: provide deploy result
+              id: set-result
+              run: echo "step-result=success" >> $GITHUB_OUTPUT

@@ -10,6 +10,10 @@ env:
     GLOBAL_TEST: ${{ secrets.MY_GLOBAL_ENV }}
 jobs:
     generate-jar:
+#        continue-on-error: true
+#        strategy:
+#            matrix:
+#                java-version: [11, 17, 18]
         environment: homolog
         runs-on: ubuntu-latest
         outputs:
@@ -19,7 +23,7 @@ jobs:
             - uses: actions/setup-java@v3
               with:
                   distribution: 'zulu'
-                  java-version: '17'
+                  java-version: 17
                   cache: 'maven'
 
             - name: Build with Maven
@@ -75,19 +79,34 @@ jobs:
 
     deploy:
         needs: [integration-test, generate-jar]
+        uses: ./.github/workflows/deploy.yml
+        with:
+            deployable-jar: app.jar
+        secrets:
+            MY_GLOBAL_SECRET: ${{ secrets.MY_GLOBAL_ENV }}
+
+    post-deploy-process:
+        needs: deploy
         runs-on: ubuntu-latest
         steps:
-            - name: Get Build Artifacts
-              uses: actions/download-artifact@v3
-              with:
-                  name: app.jar
+            - name: print deploy outcome
+              run: echo "${{needs.deploy.outputs.result}}"
 
-            - name: Output filename
-              run: echo "${{needs.generate-jar.outputs.script-file}}"
-
-            - name: deploy into server
-              run: |
-                  echo "Jar will be deployed later on"
-                  echo "GLOBAL ENV: $GLOBAL_TEST"
-                  echo "UNIT ENV: $UNIT_TEST"
-                  echo "INTEGRATION ENV: $INTEGRATION_TEST"
+#    deploy:
+#        needs: [integration-test, generate-jar]
+#        runs-on: ubuntu-latest
+#        steps:
+#            - name: Get Build Artifacts
+#              uses: actions/download-artifact@v3
+#              with:
+#                  name: app.jar
+#
+#            - name: Output filename
+#              run: echo "${{needs.generate-jar.outputs.script-file}}"
+#
+#            - name: deploy into server
+#              run: |
+#                  echo "Jar will be deployed later on"
+#                  echo "GLOBAL ENV: $GLOBAL_TEST"
+#                  echo "UNIT ENV: $UNIT_TEST"
+#                  echo "INTEGRATION ENV: $INTEGRATION_TEST"
