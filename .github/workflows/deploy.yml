@@ -14,5 +14,6 @@ jobs:
               uses: actions/download-artifact@v3
               with:
                   name: ${{inputs.deployable-jar}}
+
             - name: deploy into server
               run: echo "Jar will be deployed later on"

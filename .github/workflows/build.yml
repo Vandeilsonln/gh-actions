@@ -82,7 +82,7 @@ jobs:
         needs: [integration-test, generate-jar]
         uses: ./.github/workflows/deploy.yml
         with:
-            deployable-jar: JAR_APP_NAME
+            deployable-jar: $JAR_APP_NAME
 
 #    deploy:
 #        needs: [integration-test, generate-jar]
