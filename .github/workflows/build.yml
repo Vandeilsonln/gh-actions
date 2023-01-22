@@ -48,6 +48,8 @@ jobs:
             UNIT_TEST: ${{ secrets.MY_UNIT_TEST }}
         needs: generate-jar
         runs-on: ubuntu-latest
+        container:
+            image: maven:3.8.7-openjdk-18-slim
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-java@v3
@@ -64,6 +66,8 @@ jobs:
             INTEGRATION_TEST: ${{ secrets.MY_INTEGRATION_TEST }}
         needs: generate-jar
         runs-on: ubuntu-latest
+        container:
+            image: maven:3.8.7-openjdk-18-slim
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-java@v3
