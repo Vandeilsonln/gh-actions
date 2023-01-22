@@ -2,7 +2,6 @@ name: deploy
 on: workflow_call
 jobs:
     deploy:
-        needs: [integration-test, generate-jar]
         runs-on: ubuntu-latest
         steps:
             - name: deploy into server
