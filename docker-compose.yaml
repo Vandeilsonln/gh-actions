@@ -5,3 +5,12 @@ services:
             context: .
         ports:
             -   8080:8080
+
+    db:
+        container_name: api.db
+        image: mariadb:10.9.4
+        restart: always
+        ports:
+            - 3306:3306
+        environment:
+            MARIADB_ROOT_PASSWORD: root

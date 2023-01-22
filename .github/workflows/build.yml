@@ -68,6 +68,11 @@ jobs:
         runs-on: ubuntu-latest
         container:
             image: maven:3.8.7-openjdk-18-slim
+        services:
+            database:
+                image: mariadb:10.9.4
+                env:
+                    MARIADB_ROOT_PASSWORD: root
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-java@v3
