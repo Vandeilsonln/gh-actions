@@ -78,7 +78,6 @@ jobs:
                 run: echo "Generating sonar cloud report"
 
     deploy:
-        environment: homolog
         needs: [integration-test, generate-jar]
         uses: ./.github/workflows/deploy.yml
         with:
