@@ -82,7 +82,9 @@ jobs:
         needs: [integration-test, generate-jar]
         uses: ./.github/workflows/deploy.yml
         with:
-            deployable-jar: $JAR_APP_NAME
+            deployable-jar: ${{env.JAR_APP_NAME}}
+        secrets:
+            MY_GLOBAL_SECRET: ${{env.GLOBAL_TEST}}
 
 #    deploy:
 #        needs: [integration-test, generate-jar]

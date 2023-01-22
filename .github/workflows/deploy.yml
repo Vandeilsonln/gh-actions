@@ -6,6 +6,10 @@ on:
                 description: jar to be deployed
                 required: true
                 type: string
+            secrets:
+                MY_GLOBAL_SECRET:
+                    description: just checking how this works!
+                    required: true
 jobs:
     deploy:
         runs-on: ubuntu-latest
@@ -16,4 +20,6 @@ jobs:
                   name: ${{inputs.deployable-jar}}
 
             - name: deploy into server
-              run: echo "Jar will be deployed later on"
+              run: |
+                  echo "Jar will be deployed later on"
+                  echo "My secret is: $MY_GLOBAL_SECRET"
