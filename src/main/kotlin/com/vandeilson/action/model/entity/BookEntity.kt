@@ -4,6 +4,7 @@ import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
+import javax.persistence.Id
 import javax.persistence.Table
 
 @Entity
@@ -11,8 +12,9 @@ import javax.persistence.Table
 data class BookEntity(
 
     @Column(unique = false)
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private var id: String,
+    private var id: Long,
 
     @Column(nullable = false)
     private var title: String,
