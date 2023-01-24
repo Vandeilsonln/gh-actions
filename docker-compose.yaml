@@ -1,3 +1,4 @@
+version: "3.3"
 services:
     api:
         container_name: api.teste
@@ -17,3 +18,7 @@ services:
         environment:
             MARIADB_ROOT_PASSWORD: root
             MARIADB_DATABASE: actions
+        volumes:
+            -   mariadb-data:/var/lib/mysql
+volumes:
+    mariadb-data:

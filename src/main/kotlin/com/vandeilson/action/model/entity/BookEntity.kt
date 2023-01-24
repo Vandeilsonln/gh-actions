@@ -11,23 +11,24 @@ import javax.persistence.Table
 @Table(name = "book")
 data class BookEntity(
 
-    @Column(unique = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private var id: Long,
+    private var id: Long? = null,
 
     @Column(nullable = false)
-    private var title: String,
+    var title: String,
 
     @Column(nullable = false, name = "sub_title")
-    private var subTitle: String,
+    var subTitle: String,
 
     @Column(nullable = false)
-    private var author: String,
+    var author: String,
 
     @Column(nullable = true, name = "release_year")
-    private var releaseYear: String,
+    var releaseYear: String,
 
     @Column(nullable = false)
-    private var publisher: String
-)
+    var publisher: String
+) {
+    constructor(): this(null, "", "", "", "", "")
+}
