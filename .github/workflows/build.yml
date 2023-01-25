@@ -16,6 +16,8 @@ jobs:
 #                java-version: [11, 17, 18]
         environment: homolog
         runs-on: ubuntu-latest
+        container:
+            image: maven:3.8.7-openjdk-18-slim
         outputs:
             script-file: ${{steps.publish_name.outputs.script-file}}
         steps:
@@ -46,6 +48,8 @@ jobs:
             UNIT_TEST: ${{ secrets.MY_UNIT_TEST }}
         needs: generate-jar
         runs-on: ubuntu-latest
+        container:
+            image: maven:3.8.7-openjdk-18-slim
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-java@v3
@@ -60,8 +64,22 @@ jobs:
         environment: production
         env:
             INTEGRATION_TEST: ${{ secrets.MY_INTEGRATION_TEST }}
+            MYSQL_HOST: database
+            MYSQL_PORT: 3306
+            MYSQL_DATABASE_NAME: actions
         needs: generate-jar
         runs-on: ubuntu-latest
+        container:
+            image: maven:3.8.7-openjdk-18-slim
+        services:
+            database:
+                image: mariadb:10.9.4
+                ports:
+                    - 3306
+                env:
+                    MARIADB_USER: root
+                    MARIADB_ROOT_PASSWORD: root
+                    MARIADB_DATABASE: actions
         steps:
             -   uses: actions/checkout@v3
             -   uses: actions/setup-java@v3
@@ -91,22 +109,3 @@ jobs:
         steps:
             - name: print deploy outcome
               run: echo "${{needs.deploy.outputs.result}}"
-
-#    deploy:
-#        needs: [integration-test, generate-jar]
-#        runs-on: ubuntu-latest
-#        steps:
-#            - name: Get Build Artifacts
-#              uses: actions/download-artifact@v3
-#              with:
-#                  name: app.jar
-#
-#            - name: Output filename
-#              run: echo "${{needs.generate-jar.outputs.script-file}}"
-#
-#            - name: deploy into server
-#              run: |
-#                  echo "Jar will be deployed later on"
-#                  echo "GLOBAL ENV: $GLOBAL_TEST"
-#                  echo "UNIT ENV: $UNIT_TEST"
-#                  echo "INTEGRATION ENV: $INTEGRATION_TEST"

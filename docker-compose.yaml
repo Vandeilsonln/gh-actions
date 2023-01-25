@@ -1,0 +1,24 @@
+version: "3.3"
+services:
+    api:
+        container_name: api.teste
+        build:
+            context: .
+        env_file:
+            -   .env
+        ports:
+            -   8080:8080
+
+    db:
+        container_name: api.db
+        image: mariadb:10.9.4
+        restart: always
+        ports:
+            - 3306:3306
+        environment:
+            MARIADB_ROOT_PASSWORD: root
+            MARIADB_DATABASE: actions
+        volumes:
+            -   mariadb-data:/var/lib/mysql
+volumes:
+    mariadb-data:
