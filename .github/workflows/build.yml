@@ -10,10 +10,6 @@ env:
     GLOBAL_TEST: ${{ secrets.MY_GLOBAL_ENV }}
 jobs:
     generate-jar:
-#        continue-on-error: true
-#        strategy:
-#            matrix:
-#                java-version: [11, 17, 18]
         environment: homolog
         runs-on: ubuntu-latest
         container:
@@ -21,12 +17,8 @@ jobs:
         outputs:
             script-file: ${{steps.publish_name.outputs.script-file}}
         steps:
-            - uses: actions/checkout@v3
-            - uses: actions/setup-java@v3
-              with:
-                  distribution: 'zulu'
-                  java-version: 17
-                  cache: 'maven'
+            - name: Prepare Java and Maven
+              uses: ./.github/actions/prepare-java
 
             - name: Build with Maven
               run: mvn -B package -Dunit.skip=true --file pom.xml
@@ -51,12 +43,9 @@ jobs:
         container:
             image: maven:3.8.7-openjdk-18-slim
         steps:
-            -   uses: actions/checkout@v3
-            -   uses: actions/setup-java@v3
-                with:
-                    distribution: 'zulu'
-                    java-version: '17'
-                    cache: 'maven'
+            -   name: Prepare Java and Maven
+                uses: ./.github/actions/prepare-java
+
             -   name: Unit Tests
                 run: mvn clean -B test
 
@@ -81,12 +70,9 @@ jobs:
                     MARIADB_ROOT_PASSWORD: root
                     MARIADB_DATABASE: actions
         steps:
-            -   uses: actions/checkout@v3
-            -   uses: actions/setup-java@v3
-                with:
-                    distribution: 'zulu'
-                    java-version: '17'
-                    cache: 'maven'
+            -   name: Prepare Java and Maven
+                uses: ./.github/actions/prepare-java
+
             -   name: Integration Tests
                 id: integration_test_step
                 run: mvn -Dunit.skip=true clean -B verify
