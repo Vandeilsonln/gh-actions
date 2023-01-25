@@ -22,6 +22,8 @@ jobs:
 
             - name: Prepare Java and Maven
               uses: ./.github/actions/prepare-java
+              with:
+                  java-version: 17
 
             - name: Build with Maven
               run: mvn -B package -Dunit.skip=true --file pom.xml

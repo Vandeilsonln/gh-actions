@@ -24,6 +24,9 @@ jobs:
               with:
                   name: ${{inputs.deployable-jar}}
 
+            - name: Prepare Java and Maven
+              uses: ./.github/actions/prepare-java
+
             - name: deploy into server
               run: |
                   echo "Jar will be deployed later on"

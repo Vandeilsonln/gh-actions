@@ -1,5 +1,10 @@
 name: "setup java"
 description: "Download code and prepare java version"
+inputs:
+    java-version:
+        description: "Java version"
+        required: true
+        default: "17"
 runs:
     using: "composite"
     steps:
@@ -7,5 +12,5 @@ runs:
             uses: actions/setup-java@v3
             with:
                 distribution: 'zulu'
-                java-version: 17
+                java-version: inputs.java-version
                 cache: 'maven'
