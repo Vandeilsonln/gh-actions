@@ -109,3 +109,9 @@ jobs:
         steps:
             - name: print deploy outcome
               run: echo "${{needs.deploy.outputs.result}}"
+
+    information:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Run JS custom action
+              uses: ./.github/actions/deploy-s3
