@@ -96,12 +96,14 @@ jobs:
                 run: echo "Generating sonar cloud report"
 
     deploy:
-        needs: [integration-test, generate-jar]
+        needs: [integration-test, unit-test]
         uses: ./.github/workflows/deploy.yml
         with:
             deployable-jar: app.jar
         secrets:
             MY_GLOBAL_SECRET: ${{ secrets.MY_GLOBAL_ENV }}
+            DOCKER_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+            DOCKER_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
 
     post-deploy-process:
         needs: deploy
