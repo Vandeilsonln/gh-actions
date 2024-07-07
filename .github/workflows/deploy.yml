@@ -32,3 +32,19 @@ jobs:
             - name: provide deploy result
               id: set-result
               run: echo "step-result=success" >> $GITHUB_OUTPUT
+
+            - name: Login no Docker Hub
+              uses: docker/login-action@v3
+              with:
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+            - name: Build and push
+              uses: docker/build-push-action@v6.2.0
+              with:
+                context: .
+                push: true
+                file: ./Dockerfile
+                tags: |
+                    vandeilsonln/gh-actions:v${{ github.run_number }}
+                    vandeilsonln/gh-actions:latest
