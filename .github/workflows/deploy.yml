@@ -9,6 +9,10 @@ on:
         secrets:
             MY_GLOBAL_SECRET:
                 required: true
+            DOCKER_USERNAME:
+                required: true
+            DOCKER_TOKEN:
+                required: true
         outputs:
             result:
                 description: result of the deploy
