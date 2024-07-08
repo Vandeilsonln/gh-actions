@@ -11,6 +11,8 @@ on:
                 required: true
             DOCKER_TOKEN:
                 required: true
+            MY_GLOBAL_SECRET:
+                required: true
         outputs:
             result:
                 description: result of the deploy
