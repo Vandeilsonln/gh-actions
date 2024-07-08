@@ -19,16 +19,26 @@ jobs:
             outcome: ${{steps.set-result.outputs.step-result}}
         runs-on: ubuntu-latest
         steps:
-            - name: Get Artifact
+            - name: Get Artifact    # just for study purposes
               uses: actions/download-artifact@v3
               with:
                   name: ${{inputs.deployable-jar}}
+            
+            - name: Checkout do código conte
+              uses: actions/checkout@v4.1.7
 
-            - name: deploy into server
-              run: |
-                  echo "Jar will be deployed later on"
-                  echo "My secret is: $MY_GLOBAL_SECRET"
-
-            - name: provide deploy result
-              id: set-result
-              run: echo "step-result=success" >> $GITHUB_OUTPUT
+            - name: Login no Docker Hub
+              uses: docker/login-action@v3
+              with:
+                username: ${{ secrets.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
+              
+            - name: Build and push
+              uses: docker/build-push-action@v6.2.0
+              with:
+                context: .
+                push: true
+                file: ./Dockerfile
+                tags: |
+                  vandeilsonln/gh-actions:v${{ github.run_number }}
+                  vandeilsonln/gh-actions:latest
