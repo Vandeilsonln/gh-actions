@@ -96,12 +96,36 @@ jobs:
                 run: echo "Generating sonar cloud report"
 
     deploy:
-        needs: [integration-test, generate-jar]
+        needs: [integration-test, unit-test]
         uses: ./.github/workflows/deploy.yml
         with:
             deployable-jar: app.jar
         secrets:
             MY_GLOBAL_SECRET: ${{ secrets.MY_GLOBAL_ENV }}
+
+    
+    DOCKER:
+        runs-on: ubuntu-latest
+    
+        steps:
+        - name: Checkout do código conte
+          uses: actions/checkout@v4.1.7
+
+        - name: Login no Docker Hub
+          uses: docker/login-action@v3
+          with:
+            username: ${{ secrets.DOCKERHUB_USERNAME }}
+            password: ${{ secrets.DOCKERHUB_TOKEN }}
+          
+        - name: Build and push
+          uses: docker/build-push-action@v6.2.0
+          with:
+            context: .
+            push: true
+            file: ./Dockerfile
+            tags: |
+              vandeilsonln/gh-actions:v${{ github.run_number }}
+              vandeilsonln/gh-actions:latest
 
     post-deploy-process:
         needs: deploy
